@@ -112,7 +112,7 @@ class DHANE_Model:
         self.metapath_cutoff = args["metapath_cutoff"]
         self.node_embedding = []
         self.graph = data.nx_net
-        self.pre_train_edge_weights = [[1] * self.data.node_types] * self.data.node_types # 1只是为了初始化数组，实际上每个元素是个nxm的矩阵
+        self.pre_train_edge_weights = [[1] * self.data.node_types] * self.data.node_types # '1' is only for initialize, actual element is a MxN matrix
 
     def attention_coefficient(x, y, y_all, theta="i"):
         t1 = np.dot(theta, (x + y))
@@ -169,13 +169,13 @@ class DHANE_Model:
         metagraph_dic_v = {}
         metapaths_dic_v = {}
         for n in neighbors:
-            #metagraph_dic_v[n] = []
+            metagraph_dic_v[n] = []
             print(n, v)
             metapaths_dic_v[n] = sorted(nx.all_simple_edge_paths(self.graph, v[0], n, cutoff=self.metapath_cutoff))
             print("all simple path", len(metapaths_dic_v[n]))
-            #for path in sorted(nx.all_simple_edge_paths(self.graph, v, n)):
-            #    for edge in path:
-            #        metagraph_dic_v[n].append(edge)
+            for path in sorted(nx.all_simple_edge_paths(self.graph, v, n)):
+                for edge in path:
+                    metagraph_dic_v[n].append(edge)
 
         return neighbors, metapaths_dic_v
 
